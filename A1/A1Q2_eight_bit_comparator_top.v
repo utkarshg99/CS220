@@ -11,6 +11,7 @@ module eight_bit_comparator_top;
        $display("A: %d, B: %d, Lt: %d, Eq: %d, Gt: %d", A, B, l, e, g);
    end
 
+//test cases begin here
    initial begin
       A = 100; B = 100;
       #1
