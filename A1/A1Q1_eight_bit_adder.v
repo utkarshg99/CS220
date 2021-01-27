@@ -9,7 +9,7 @@ module eight_bit_adder (x, y, carry_in, sum, carry_out);
    output carry_out;
    wire carry_out;
 
-   wire [6:0] intermediate_carry;
+   wire [6:0] intermediate_carry;//needed for storing the carry out of adding the bits to the right of MSB
 
    one_bit_full_adder FA0 (x[0], y[0], carry_in, sum[0], intermediate_carry[0]);
    one_bit_full_adder FA1 (x[1], y[1], intermediate_carry[0], sum[1], intermediate_carry[1]);
