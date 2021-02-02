@@ -21,7 +21,7 @@ initial begin
 end
 
 always @(posedge clk) begin
-    count <= #1 count + 20'b1;
+    count <= count + 20'b1;
     if (count==310000) $finish;
 end
 
