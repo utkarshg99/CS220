@@ -8,10 +8,8 @@ module test;
 
   reg[3:0] total;
 
-always @(negedge clk) begin
-    if(outb==1) begin
-        $display("Input Row: %d, Input Bit: %b, Time: %d, Output: %b \n", inp, inpb, $time, out);
-    end
+always @(posedge outb) begin
+    $display("Input Row: %d, Input Bit: %b, Time: %d, Output: %b \n", inp, inpb, $time, out);
 end
 
 initial begin 
@@ -75,12 +73,6 @@ initial begin
     inpb<=0;
     #10;
     inpb<=1; inp<=4;
-    #10;
-    inpb<=0;
-    #10;
-    inpb<=0;
-    #10;
-    inpb<=1; inp<=8;
     #10;
     inpb<=0;
     #10;

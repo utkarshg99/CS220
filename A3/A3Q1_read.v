@@ -5,12 +5,14 @@ input [3:0] rno;
 output reg output_bit;
 output reg [31:0] y;
 
-reg [3:0]ropen;
+reg active=0;
+reg [3:0] ropen;
 reg [31:0] regfl [0:15];
 
+reg [1:0] current=0;
+
 initial begin
-    
-// ropen<=4'bx;
+
 output_bit=1'b0;
 regfl[0]<=0;
 regfl[1]<=1;
@@ -33,22 +35,28 @@ end
 
 always @(posedge clk) begin
     if(input_valid==1) begin
-        if(ropen===rno) begin
-            y<=regfl[ropen];
-            output_bit<=1'b1;
-        end
-        else if(ropen===4'bx) begin
-            output_bit<=1'b0;
+        output_bit<=1'b0;
+        if(active==0) begin
+            active<=1;
             ropen<=rno;
-            y<= #9 regfl[rno];
-            output_bit<= #10 1'b1;
+            y<=regfl[rno];
+            current=1;
+        end
+        else if(ropen==rno) begin
+            y<=regfl[ropen];
+            current=0;
         end
         else begin
-            output_bit<=1'b0;
             ropen<=rno;
-            y<= #19 regfl[rno];
-            output_bit<= #20 1'b1;
+            y<=regfl[rno];
+            current=2;
         end
+    end
+    if(current==0) begin
+        output_bit<=1'b1;
+    end
+    else begin
+        current<=current-1;
     end
 end
 
