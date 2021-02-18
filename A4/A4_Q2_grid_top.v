@@ -24,7 +24,7 @@ end
 
 initial begin
     #3;
-    steps<=1;
+    steps<=2;
     direction<=1; // 0,0 
     #10;
     $display("X: %d, Y: %d, Steps: %d, Direction: %d", outx, outy, steps, direction);

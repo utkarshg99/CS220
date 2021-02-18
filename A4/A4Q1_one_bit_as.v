@@ -10,7 +10,8 @@ module one_bit_as (a, b, cin, opcode, sum, cout);
    output cout;
    wire cout;
 
-   assign sum=a^(opcode^b)^cin;
-   assign cout=((a&(opcode^b)) | ((opcode^b)&cin) | (a&cin));
+   assign bd=opcode^b;
+   assign sum=a^bd^cin;
+   assign cout=((a&bd) | (bd&cin) | (a&cin));
 
 endmodule

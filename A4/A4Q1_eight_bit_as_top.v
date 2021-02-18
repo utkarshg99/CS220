@@ -1,62 +1,66 @@
 module eight_bit_as_top;
 
-   reg [7:0] A;
-   reg [7:0] B;
+   reg signed [7:0] A; // took signed to ease display
+   reg signed [7:0] B; // took signed to ease display
    reg Opcode;
 
-   reg [7:0] alpha = 8'b11111111;
+   reg out;
 
-   wire [7:0] Sum;
+   wire signed [7:0] Sum; // took signed to ease display
    wire Carry;
    wire Overflow;
 
    eight_bit_as AS (A, B, Opcode, Sum, Carry, Overflow);
 
-   always @ (Sum or Carry or Overflow) begin
-       if(Carry == 1'b1 & Opcode == 1'b1) begin 
-        $display("A: %b, B: %b, Opcode: %d, Result: %b, Carry: %b, Overflow: %b, Decimal: -%d", A, B, Opcode, Sum, Carry, Overflow, Sum);
-       end
-    //    else if(Carry == 1'b0 & Opcode == 1'b1) begin 
-    //     $display("A: %b, B: %b, Opcode: %d, Result: %b, Carry: %b, Overflow: %b, Decimal: %d", A, B, Opcode, Sum, Carry, Overflow, (alpha^Sum)+1);
-    //    end
-       else begin
-        $display("A: %b, B: %b, Opcode: %d, Result: %b, Carry: %b, Overflow: %b, Decimal: %d", A, B, Opcode, Sum, Carry, Overflow, (alpha^Sum)+1);
-       end
+   always @ (posedge out) begin
+       $display("A: %b (%d), B: %b (%d), Opcode: %b, Result: %b (%d), Carry: %b, Overflow: %b", A, A, B, B, Opcode, Sum, Sum, Carry, Overflow);
    end
 
    initial begin
-      A <= (alpha^128)+1; B <= (alpha^129)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^129)+1; B <= (alpha^128)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^2)+1; B <= (alpha^2)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^35)+1; B <= (alpha^128)+1; Opcode <= 0;
-      #1
-      $display("\n");
-      A <= (alpha^5)+1; B <= (alpha^25)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^25)+1; B <= (alpha^5)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^5)+1; B <= (alpha^25)+1; Opcode <= 0;
-      #1
-      $display("\n");
-      A <= (alpha^255)+1; B <= (alpha^55)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^55)+1; B <= (alpha^255)+1; Opcode <= 1;
-      #1
-      $display("\n");
-      A <= (alpha^255)+1; B <= (alpha^255)+1; Opcode <= 1;
+      A <= 8'b01111111; B <= 8'b01111000; Opcode <= 1; // 7
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b01111000; B <= 8'b01111111; Opcode <= 1; // -7
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b01111111; B <= 8'b01111111; Opcode <= 1; // 0
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b01111111; B <= 8'b00000000; Opcode <= 1; // 127
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b00000000; B <= 8'b01111111; Opcode <= 1; // -127
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b11100111; B <= 8'b00110111; Opcode <= 1; // -80
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b00100011; B <= 8'b10111111; Opcode <= 0; // -30
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b11011101; B <= 8'b10111111; Opcode <= 0; // -100
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b00000101; B <= 8'b00011001; Opcode <= 0; // 30
+      out=1'b0;
+      #1;
+      out=1'b1;
+      A <= 8'b00101101; B <= 8'b11011101; Opcode <= 0; // 10
+      out=1'b0;
+      #1;
+      out=1'b1;
    end
 
    initial begin
-       #10
+       #10;
        $finish;
    end
 

@@ -43,7 +43,7 @@ always @(posedge clk) begin
         opcode<=1;
         a=outx;
         #1;
-        if(carry==0) begin
+        if(out[4]==1) begin
             outx=0;
         end
         else begin
@@ -67,7 +67,7 @@ always @(posedge clk) begin
         opcode<=1;
         a=outy;
         #1;
-        if(carry==0) begin
+        if(out[4]==1) begin
             outy=0;
         end
         else begin
