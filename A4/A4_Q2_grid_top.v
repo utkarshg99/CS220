@@ -8,10 +8,6 @@ module test;
 
   reg[3:0] total;
 
-// always @() begin
-    // $display("Input Row: %d, Input Bit: %b, Time: %d, Output: %b \n", inp, inpb, $time, out);
-// end
-
 initial begin 
   forever begin
       clk=0;

@@ -2,8 +2,8 @@ module test;
   reg x; reg clk; wire y; 
   fsm uut(clk,x,y);
 
-always @(posedge clk) begin
-  #1 $display("x: %b, time: %d, Y: %b \n", x, $time, y);
+always @(negedge clk) begin
+  $display("x: %b, time: %d, Y: %b \n", x, $time, y);
 end
 
 initial begin 

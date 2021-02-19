@@ -18,8 +18,8 @@ wire over;
 
 initial begin
 
-outx = 0;
-outy = 0;
+outx <= 0;
+outy <= 0;
 
 end
 
@@ -29,8 +29,27 @@ always @(posedge clk) begin
     if(direction==0) begin
         b<=steps;
         opcode<=0;
-        a=outx;
-        #1;
+        a<=outx;
+    end
+    else if(direction==1) begin
+        b<=steps;
+        opcode<=1;
+        a<=outx;
+    end
+    else if(direction==2) begin
+        b<=steps;
+        opcode<=0;
+        a<=outy;
+    end
+    else if(direction==3) begin
+        b<=steps;
+        opcode<=1;
+        a<=outy;
+    end
+end
+
+always @(negedge clk) begin
+    if(direction==0) begin
         if(out[4]==1) begin
             outx=15;
         end
@@ -39,10 +58,6 @@ always @(posedge clk) begin
         end
     end
     else if(direction==1) begin
-        b<=steps;
-        opcode<=1;
-        a=outx;
-        #1;
         if(out[4]==1) begin
             outx=0;
         end
@@ -51,10 +66,6 @@ always @(posedge clk) begin
         end
     end
     else if(direction==2) begin
-        b<=steps;
-        opcode<=0;
-        a=outy;
-        #1;
         if(out[4]==1) begin
             outy=15;
         end
@@ -63,10 +74,6 @@ always @(posedge clk) begin
         end
     end
     else if(direction==3) begin
-        b<=steps;
-        opcode<=1;
-        a=outy;
-        #1;
         if(out[4]==1) begin
             outy=0;
         end
