@@ -13,13 +13,13 @@ module insmem(clk, done, icount, rcount, jcount, count3, count4, count5, count6)
 
     reg [31:0] insmemory [0:7];
     reg [31:0] pc;
-    reg [5:0] counter;
+    reg [4:0] counter;
     reg [5:0] opcode;
     reg [4:0] rs;
     reg [4:0] rt;
     reg [4:0] rd;
     reg [4:0] sh;
-    reg [4:0] fn;
+    reg [5:0] fn;
     reg [15:0] imm;
     reg [25:0] jimm;
 
