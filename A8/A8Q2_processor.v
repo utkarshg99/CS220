@@ -71,7 +71,7 @@ module processor(clk, done, outv);
         regfl[28] <= 0;
         regfl[29] <= 0;
         regfl[30] <= 0;
-        regfl[31] <= 11;
+        regfl[31] <= 0;
     end
 
     always @(posedge clk) begin
@@ -120,6 +120,7 @@ module processor(clk, done, outv);
                 end
             end
             else if (opcode == 3) begin
+                regfl[31] <= counter+1;
                 counter <= jimm;
             end
             else if (opcode == 4) begin
