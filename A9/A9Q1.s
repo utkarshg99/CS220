@@ -2,24 +2,21 @@
 endmsg:     .asciiz " "
             .text
             .globl recur
-recur:      li $t0, 1
-            li $t1, 2
-            beq $a0, $t0, label
-            beq $a0, $t1, label
+recur:      slti $t0, $a0, 3
+            bne $t0, $0, label
             sw $ra, -4($sp)
             sw $a0, -8($sp)
-            sw $0, -12($sp)
-            addi $sp, $sp, -12
+            addi $sp, $sp, -8
             addi $a0, $a0, -1
             jal recur
-            lw $a0, 4($sp)
+            lw $a0, 0($sp)
             sw $v0, 0($sp)
             addi $a0, $a0, -2
             jal recur
             lw $t0, 0($sp)
             add $v0, $t0, $v0
-            lw $ra, 8($sp)
-            addi $sp, $sp, 12
+            lw $ra, 4($sp)
+            addi $sp, $sp, 8
             jr $ra
 label:      li $v0, 1
             jr $ra    
@@ -28,7 +25,6 @@ main:       li $v0, 5
             syscall
             add $t2, $0, $v0
             li $t3, 1
-            add $t4, $0, $0
             sw $ra, -4($sp)
             addi $sp, $sp, -4
 loop:       add $a0, $0, $t3
