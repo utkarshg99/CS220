@@ -1,5 +1,5 @@
             .data
-array:      .space 64
+array:      .space 48
 result:     .asciiz "Found element at index "
 failres:    .asciiz "Element was not found"
 enter1:     .asciiz "Enter N "
