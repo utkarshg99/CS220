@@ -10,9 +10,9 @@ module booth(clk, inp, mtpr, mtpd, done, adds, subs, prod);
     output reg [5:0] subs;
     output reg [63:0] prod;
 
-    reg [63:0] multiplier;
-    reg [63:0] multiplicand;
-    reg [63:0] tmp;
+    reg signed [63:0] multiplier;
+    reg signed [63:0] multiplicand;
+    reg [63:0] tmp = 64'b1111111111111111111111111111111111111111111111111111111111111111;
     reg [5:0] pos;
     reg k;
 
@@ -22,7 +22,7 @@ module booth(clk, inp, mtpr, mtpd, done, adds, subs, prod);
 
     always @(posedge clk) begin
         if (inp == 1) begin
-            multiplier <= $signed(mtpr);
+            multiplier <= $signed(mtpr << 1);
             multiplicand <= $signed(mtpd);
             adds <= 0;
             subs <= 0;
@@ -31,23 +31,22 @@ module booth(clk, inp, mtpr, mtpd, done, adds, subs, prod);
             pos <= 0;
         end
         else if (pos < 32) begin
-            tmp = $signed(multiplicand << pos);
-            if (pos == 0 && multiplier[pos] == 1) begin
+            if (multiplier[0] == 1 && multiplier[1] == 0) begin
+                adds = adds + 1;
+                prod = prod + multiplicand;
+            end
+            else if (multiplier[1] == 1 && multiplier[0] == 0) begin
                 subs = subs + 1;
-                prod = prod - tmp;
+                prod = prod - multiplicand;
             end
-            else if (pos != 0) begin
-                if (multiplier[pos-1] == 1 && multiplier[pos] == 0) begin
-                    adds = adds + 1;
-                    prod = prod + tmp;
-                end
-                else if (multiplier[pos] == 1 && multiplier[pos-1] == 0) begin
-                    subs = subs + 1;
-                    prod = prod - tmp;
-                end
+            pos <= pos+1;
+            multiplier = multiplier >>> 1;
+            multiplicand = multiplicand << 1;
+            k = multiplier[0];
+            if ((k == 0 && multiplier == 0) || (k == 1 && multiplier == tmp)) begin
+                done <= 1;
+                pos <= 32;
             end
-            for (k = multiplier[pos]; multiplier[pos] == k && pos < 32; pos++);
-            if (pos == 32) done <= 1;
         end
     end
 

@@ -67,7 +67,7 @@ module test;
 
     always @(negedge clk) begin
         if (done == 1) begin
-            if (ptr!=0) $display("Dividend: %d, Divisor: %d, Quotient: %d, Remainder: %d, Additions: %d, Substractions: %d", dvd, dvs, quo, rem, adds, subs);
+            if (ptr!=0) $display("Dividend: %d, Divisor: %d, Quotient: %d, Remainder: %d, Additions: %d, Subtractions: %d", dvd, dvs, quo, rem, adds, subs);
             ptr <= ptr + 1;
             inp <= 1;
             dvd <= dividends[ptr];

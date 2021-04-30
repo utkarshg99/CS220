@@ -42,7 +42,7 @@ module test;
 
     always @(negedge clk) begin
         if (done == 1) begin
-            if (ptr!=0) $display("Multiplicand: %d, Multiplier: %d, Product: %d, Additions: %d, Substractions: %d", $signed(mtpd), $signed(mtpr), $signed(prod), adds, subs);
+            if (ptr!=0) $display("Multiplicand: %d, Multiplier: %d, Product: %d, Additions: %d, Subtractions: %d", $signed(mtpd), $signed(mtpr), $signed(prod), adds, subs);
             ptr <= ptr + 1;
             inp <= 1;
             mtpd <= multiplicands[ptr];
